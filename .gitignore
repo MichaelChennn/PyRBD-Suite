@@ -1,0 +1,25 @@
+# VSCode settings
+# .vscode/
+
+# Build artifacts
+**/build/
+
+# Benchmark results
+benchmark/**/results/
+benchmark/**/*.csv
+
+# Python cache and metadata
+__pycache__/
+*.egg-info/
+
+# Scalability scripts and outputs
+scalability/*
+
+# Ignore all large topology files csv files
+topologies/**/*.csv
+
+# Compiled shared objects
+*.so
+
+# .DS_Store files (macOS)
+*.DS_Store
