@@ -13,8 +13,8 @@ sudo apt update
 ## Python Environment
 
 ```bash
-conda create -n pyrbd_plusplus python=3.10
-conda activate pyrbd_plusplus
+conda create -n pyrbd_suite python=3.10
+conda activate pyrbd_suite
 pip install --upgrade pip
 pip install -r requirements.txt
 conda install -c conda-forge gcc_linux-64=11 gxx_linux-64=11
