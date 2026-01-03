@@ -11,7 +11,7 @@ project_root = os.path.abspath(os.path.join(current_dir, "../../"))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-from pyrbd_utils import read_graph
+from pyrbd_utils import read_graph, relabel_graph_A_dict
 from benchmark.availability.availability_benchmarks import AvailabilityBenchmarks
 from pyrbd3.algorithms.sets import minimalcuts as pyrbd3_minimalcuts
 from pyrbd_plusplus.algorithms.sets.pathsets import minimalpaths
@@ -22,32 +22,42 @@ RESULTS_DIR = os.path.join(current_dir, "results")
 
 # Algorithm mapping: (Short Name, Benchmark Function, Input Type)
 # Input Type: "mcs" or "pathset"
-ALGORITHMS = [
-    # MCS based
-    ("mcs_to_probaset", AvailabilityBenchmarks.mcs_to_probaset, "mcs"),
+ALGORITHMS_SINGLE = [
+    # PyRBD++ MCS based
     ("pyrbdpp_mcs_single_flow", AvailabilityBenchmarks.pyrbdpp_mcs_single_flow, "mcs"),
     
-    # Pathset based
-    ("pathset_to_probaset", AvailabilityBenchmarks.pathset_to_probaset, "pathset"),
+    # PyRBD++ Pathset based
     ("pyrbdpp_pathset_single_flow", AvailabilityBenchmarks.pyrbdpp_pathset_single_flow, "pathset"),
-    ("sdp_to_sdp_set", AvailabilityBenchmarks.sdp_to_sdp_set, "pathset"),
+    
+    # PyRBD3 SDP based
     ("pyrbd3_sdp_single_flow", AvailabilityBenchmarks.pyrbd3_sdp_single_flow, "pathset"),
     
-    # Parallel versions
-    ("sdp_to_sdp_set_parallel", AvailabilityBenchmarks.sdp_to_sdp_set_parallel, "pathset"),
+    # Parallel versions (Single Flow Parallel)
     ("pyrbd3_sdp_single_flow_parallel", AvailabilityBenchmarks.pyrbd3_sdp_single_flow_parallel, "pathset"),
+]
+
+ALGORITHMS_WHOLE = [
+    # PyRBD++ MCS based
+    ("pyrbdpp_mcs_whole_topo", AvailabilityBenchmarks.pyrbdpp_mcs_whole_topo, "mcs"),
+    ("pyrbdpp_mcs_whole_topo_parallel", AvailabilityBenchmarks.pyrbdpp_mcs_whole_topo_parallel, "mcs"),
+    
+    # PyRBD++ Pathset based
+    ("pyrbdpp_pathset_whole_topo", AvailabilityBenchmarks.pyrbdpp_pathset_whole_topo, "pathset"),
+    ("pyrbdpp_pathset_whole_topo_parallel", AvailabilityBenchmarks.pyrbdpp_pathset_whole_topo_parallel, "pathset"),
+    
+    # PyRBD3 SDP based
+    ("pyrbd3_sdp_whole_topo", AvailabilityBenchmarks.pyrbd3_sdp_whole_topo, "pathset"),
+    ("pyrbd3_sdp_whole_topo_parallel", AvailabilityBenchmarks.pyrbd3_sdp_whole_topo_parallel, "pathset"),
 ]
 
 def get_probabilities(G):
     """
     Generate a probability dictionary for the graph.
-    Assigns 0.9 to all nodes and edges.
+    Assigns 0.9 to all nodes.
     """
     probs = {}
     for node in G.nodes():
         probs[node] = 0.9
-    for edge in G.edges():
-        probs[edge] = 0.9
     return probs
 
 def run_benchmarks(topologies=None):
@@ -86,6 +96,9 @@ def run_benchmarks(topologies=None):
             # Generate probabilities
             probabilities = get_probabilities(G)
 
+            # Relabel graph and probabilities
+            G, probabilities, _ = relabel_graph_A_dict(G, probabilities)
+
             # Get all node pairs
             node_pairs = list(combinations(G.nodes(), 2))
             
@@ -114,9 +127,14 @@ def run_benchmarks(topologies=None):
                 print(f"  ⚠️ No sets generated for {topo_name}, skipping algorithms.")
                 continue
 
-            # Now run all algorithms for this topology
-            for algo_name, algo_func, input_type in ALGORITHMS:
-                print(f"  🚀 Running {algo_name}...")
+            # Prepare data for whole topo algorithms
+            pairs_list = list(pair_data.keys())
+            mcs_list = [pair_data[p]["mcs"] for p in pairs_list]
+            pathset_list = [pair_data[p]["pathset"] for p in pairs_list]
+
+            # 1. Run Single Flow Algorithms
+            for algo_name, algo_func, input_type in ALGORITHMS_SINGLE:
+                print(f"  🚀 Running {algo_name} (Single Flow)...")
                 
                 # Create results directory for this algorithm
                 algo_results_dir = os.path.join(RESULTS_DIR, algo_name)
@@ -131,19 +149,6 @@ def run_benchmarks(topologies=None):
                             continue
                             
                         # Prepare arguments based on function signature
-                        # Some take (src, dst, sets), others (src, dst, probs, sets)
-                        # We check the function name or try/except, or just inspect signature.
-                        # But based on AvailabilityBenchmarks class:
-                        # mcs_to_probaset(src, dst, min_cut_sets)
-                        # pyrbdpp_mcs_single_flow(src, dst, probabilities, min_cut_sets)
-                        # pathset_to_probaset(src, dst, path_sets)
-                        # pyrbdpp_pathset_single_flow(src, dst, probabilities, path_sets)
-                        # sdp_to_sdp_set(src, dst, path_sets)
-                        # pyrbd3_sdp_single_flow(src, dst, probabilities, path_sets)
-                        
-                        # It seems functions with "single_flow" or "eval_avail" take probabilities.
-                        # Functions with "to_probaset" or "to_sdp_set" do not.
-                        
                         if "single_flow" in algo_name or "eval_avail" in algo_name:
                             res, exec_time = algo_func(src, dst, probabilities, sets)
                         else:
@@ -154,11 +159,9 @@ def run_benchmarks(topologies=None):
                                 "source": src,
                                 "target": dst,
                                 f"{algo_name}_time (second)": f"{exec_time:.10f}",
-                                # "result": res # Optional: save result
                             }
                         )
                     except Exception as e:
-                        # print(f"    ❌ Error processing pair ({src}, {dst}) with {algo_name}: {e}")
                         pass
 
                 # Save results to CSV
@@ -168,6 +171,36 @@ def run_benchmarks(topologies=None):
                     output_path = os.path.join(algo_results_dir, output_filename)
                     df.to_csv(output_path, index=False)
                     print(f"    ✅ Saved results to {output_path}")
+                else:
+                    print(f"    ⚠️ No results generated for {topo_name} - {algo_name}")
+
+            # 2. Run Whole Topo Algorithms
+            for algo_name, algo_func, input_type in ALGORITHMS_WHOLE:
+                print(f"  🚀 Running {algo_name} (Whole Topo)...")
+                algo_results_dir = os.path.join(RESULTS_DIR, algo_name)
+                os.makedirs(algo_results_dir, exist_ok=True)
+                
+                sets_list = mcs_list if input_type == "mcs" else pathset_list
+                
+                try:
+                    # Whole topo functions return (result, time)
+                    # Signature: (node_pairs, probabilities, sets_list)
+                    res, exec_time = algo_func(pairs_list, probabilities, sets_list)
+                    
+                    results = [{
+                        "topology": topo_name,
+                        "num_pairs": len(pairs_list),
+                        f"{algo_name}_time (second)": f"{exec_time:.10f}"
+                    }]
+                    
+                    df = pd.DataFrame(results)
+                    output_filename = f"{topo_name}_Availability_{algo_name}.csv"
+                    output_path = os.path.join(algo_results_dir, output_filename)
+                    df.to_csv(output_path, index=False)
+                    print(f"    ✅ Saved results to {output_path}")
+
+                except Exception as e:
+                    print(f"    ❌ Error running {algo_name}: {e}")
                 else:
                     print(f"    ⚠️ No results generated for {topo_name} - {algo_name}")
 

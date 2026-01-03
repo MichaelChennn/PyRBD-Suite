@@ -15,26 +15,6 @@ class AvailabilityBenchmarks:
     # ==============================
 
     @staticmethod
-    def mcs_to_probaset(src, dst, min_cut_sets):
-        """
-        Benchmark mcs.to_probaset
-        """
-        start_time = time.perf_counter()
-        result = pyrbdpp_core.mcs.to_probaset(src, dst, min_cut_sets)
-        end_time = time.perf_counter()
-        return result, end_time - start_time
-
-    # @staticmethod
-    # def mcs_to_probaset_debug(src, dst, min_cut_sets):
-    #     """
-    #     Benchmark mcs.to_probaset_debug
-    #     """
-    #     start_time = time.perf_counter()
-    #     result = pyrbdpp_core.mcs.to_probaset_debug(src, dst, min_cut_sets)
-    #     end_time = time.perf_counter()
-    #     return result, end_time - start_time
-
-    @staticmethod
     def pyrbdpp_mcs_single_flow(src, dst, probabilities, min_cut_sets):
         """
         Benchmark mcs.eval_avail
@@ -71,27 +51,6 @@ class AvailabilityBenchmarks:
     # ==============================
     # PathSet Algorithm Benchmarks (PyRBD++)
     # ==============================
-
-    @staticmethod
-    def pathset_to_probaset(src, dst, path_sets):
-        """
-        Benchmark pathset.to_probaset
-        """
-        start_time = time.perf_counter()
-        result = pyrbdpp_core.pathset.to_probaset(src, dst, path_sets)
-        end_time = time.perf_counter()
-        return result, end_time - start_time
-
-    # @staticmethod
-    # def pathset_to_probaset_debug(src, dst, path_sets):
-    #     """
-    #     Benchmark pathset.to_probaset_debug
-    #     """
-    #     start_time = time.perf_counter()
-    #     result = pyrbdpp_core.pathset.to_probaset_debug(src, dst, path_sets)
-    #     end_time = time.perf_counter()
-    #     return result, end_time - start_time
-
     @staticmethod
     def pyrbdpp_pathset_single_flow(src, dst, probabilities, path_sets):
         """
@@ -129,27 +88,6 @@ class AvailabilityBenchmarks:
     # ==============================
     # SDP Algorithm Benchmarks (PyRBD3)
     # ==============================
-
-    @staticmethod
-    def sdp_to_sdp_set(src, dst, path_sets):
-        """
-        Benchmark sdp.to_sdp_set (Serial)
-        """
-        start_time = time.perf_counter()
-        result = pyrbd3_core.sdp.to_sdp_set(src, dst, path_sets)
-        end_time = time.perf_counter()
-        return result, end_time - start_time
-
-    @staticmethod
-    def sdp_to_sdp_set_parallel(src, dst, path_sets):
-        """
-        Benchmark sdp.to_sdp_set_parallel (Parallel)
-        """
-        start_time = time.perf_counter()
-        result = pyrbd3_core.sdp.to_sdp_set_parallel(src, dst, path_sets)
-        end_time = time.perf_counter()
-        return result, end_time - start_time
-
     @staticmethod
     def pyrbd3_sdp_single_flow(src, dst, probabilities, path_sets):
         """
