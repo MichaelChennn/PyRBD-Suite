@@ -28,21 +28,22 @@ ALGORITHMS = [
 ]
 
 
-def run_benchmarks():
+def run_benchmarks(topologies=None):
     # Check topologies directory
     if not os.path.exists(TOPOLOGIES_DIR):
         print(f"❌ Topologies directory not found: {TOPOLOGIES_DIR}")
         return
 
-    # Get list of topologies
-    topologies = [
-        d
-        for d in os.listdir(TOPOLOGIES_DIR)
-        if os.path.isdir(os.path.join(TOPOLOGIES_DIR, d))
-    ]
-    topologies.sort()
+    # Get list of topologies if not provided
+    if topologies is None:
+        topologies = [
+            d
+            for d in os.listdir(TOPOLOGIES_DIR)
+            if os.path.isdir(os.path.join(TOPOLOGIES_DIR, d))
+        ]
+        topologies.sort()
 
-    print(f"Found {len(topologies)} topologies: {', '.join(topologies)}")
+        print(f"Found {len(topologies)} topologies: {', '.join(topologies)}")
 
     # Iterate through algorithms in the specified order
     for algo_name, algo_func in ALGORITHMS:
@@ -110,4 +111,7 @@ def run_benchmarks():
 
 
 if __name__ == "__main__":
-    run_benchmarks()
+    topos_large_scale = ["india35", "jonas-us-ca", "pioro40","zib54", "Germany_50"]
+    topos_small_scale = ["Abilene", "polska", "HiberniaUk", "Germany_17", "Spain", "Austria_24", "Nobel_EU", "Sweden", "USA_26", "Norway"]
+    
+    run_benchmarks(topos_small_scale)

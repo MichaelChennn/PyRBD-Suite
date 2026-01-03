@@ -24,15 +24,15 @@ class AvailabilityBenchmarks:
         end_time = time.perf_counter()
         return result, end_time - start_time
 
-    @staticmethod
-    def mcs_to_probaset_debug(src, dst, min_cut_sets):
-        """
-        Benchmark mcs.to_probaset_debug
-        """
-        start_time = time.perf_counter()
-        result = pyrbdpp_core.mcs.to_probaset_debug(src, dst, min_cut_sets)
-        end_time = time.perf_counter()
-        return result, end_time - start_time
+    # @staticmethod
+    # def mcs_to_probaset_debug(src, dst, min_cut_sets):
+    #     """
+    #     Benchmark mcs.to_probaset_debug
+    #     """
+    #     start_time = time.perf_counter()
+    #     result = pyrbdpp_core.mcs.to_probaset_debug(src, dst, min_cut_sets)
+    #     end_time = time.perf_counter()
+    #     return result, end_time - start_time
 
     @staticmethod
     def pyrbdpp_mcs_single_flow(src, dst, probabilities, min_cut_sets):
@@ -82,15 +82,15 @@ class AvailabilityBenchmarks:
         end_time = time.perf_counter()
         return result, end_time - start_time
 
-    @staticmethod
-    def pathset_to_probaset_debug(src, dst, path_sets):
-        """
-        Benchmark pathset.to_probaset_debug
-        """
-        start_time = time.perf_counter()
-        result = pyrbdpp_core.pathset.to_probaset_debug(src, dst, path_sets)
-        end_time = time.perf_counter()
-        return result, end_time - start_time
+    # @staticmethod
+    # def pathset_to_probaset_debug(src, dst, path_sets):
+    #     """
+    #     Benchmark pathset.to_probaset_debug
+    #     """
+    #     start_time = time.perf_counter()
+    #     result = pyrbdpp_core.pathset.to_probaset_debug(src, dst, path_sets)
+    #     end_time = time.perf_counter()
+    #     return result, end_time - start_time
 
     @staticmethod
     def pyrbdpp_pathset_single_flow(src, dst, probabilities, path_sets):
