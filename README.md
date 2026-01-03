@@ -27,5 +27,17 @@ chmod +x build.sh
 ./build.sh
 ```
 
+## Run the benchmark
+- Get time for availability estimation
+```bash
+conda activate pyrbd_suite
+python benchmark/availability/run_availability_benchmarks.py 
+```
+
+- Get time for minimal cut sets evaluation
+```bash
+python benchmark/mincutsets/run_mincutsets_benchmark.py  
+```
+
 ## Topology Reference
 **Germany_17**: [SNDlib 1.0-survivable network design library](https://sndlib.put.poznan.pl/home.action)
