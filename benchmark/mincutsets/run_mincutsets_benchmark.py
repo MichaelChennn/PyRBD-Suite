@@ -21,10 +21,10 @@ RESULTS_DIR = os.path.join(current_dir, "results")
 # Order: pyrbd3_cnf, pyrbd3_multiplication, pyrbd3_shannon, pyrbdpp_combination_matrix, pyrbdpp_combination
 ALGORITHMS = [
     ("cnf", MincutsetsBenchmarks.pyrbd3_cnf_tree),
-    ("multiplication", MincutsetsBenchmarks.pyrbd3_multiplication),
+    # ("multiplication", MincutsetsBenchmarks.pyrbd3_multiplication),
     ("shannon", MincutsetsBenchmarks.pyrbd3_shannon),
-    ("combination_matrix", MincutsetsBenchmarks.pyrbdpp_combination_matrix),
-    ("combination", MincutsetsBenchmarks.pyrbdpp_combination),
+    # ("combination_matrix", MincutsetsBenchmarks.pyrbdpp_combination_matrix),
+    # ("combination", MincutsetsBenchmarks.pyrbdpp_combination),
 ]
 
 
@@ -112,6 +112,7 @@ def run_benchmarks(topologies=None):
 
 if __name__ == "__main__":
     topos_large_scale = ["india35", "jonas-us-ca", "pioro40","zib54", "Germany_50"]
-    topos_small_scale = ["Abilene", "polska", "HiberniaUk", "Germany_17", "Spain", "Austria_24", "Nobel_EU", "Sweden", "USA_26", "Norway"]
+    topos_special = ["india35", "jonas-us-ca", "pioro40"]
+    topos_small_scale = ["Abilene", "polska", "HiberniaUk", "Germany_17", "Spain", "Austria_24", "Sweden", "USA_26", "Norway", "Nobel_EU"]
     
-    run_benchmarks(topos_small_scale)
+    run_benchmarks(topos_special)

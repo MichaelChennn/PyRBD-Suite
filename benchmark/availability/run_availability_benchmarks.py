@@ -212,7 +212,7 @@ def run_benchmarks(topologies=None):
 
 if __name__ == "__main__":
     topos_large_scale = ["india35", "jonas-us-ca", "pioro40","zib54", "Germany_50"]
-    topos_small_scale = ["Abilene", "polska", "HiberniaUk", "Germany_17", "Spain", "Austria_24", "Nobel_EU", "Sweden", "USA_26", "Norway"]
+    topos_small_scale = ["Abilene", "polska", "HiberniaUk", "Germany_17", "Spain", "Austria_24", "Sweden", "USA_26", "Norway","Nobel_EU"]
     
     # Default to small scale for testing
     run_benchmarks(topos_small_scale)
