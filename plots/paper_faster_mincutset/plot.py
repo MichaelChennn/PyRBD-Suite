@@ -31,9 +31,9 @@ def plot_1(plot_name, topologies=None):
         combination_times.append(combination_time)
         minimalpaths_times.append(minimalpaths_time)
 
-    print("CNF times:", cnf_times)
-    print("Combination times:", combination_times)
-    print("Minimal paths times:", minimalpaths_times)
+    # print("CNF times:", cnf_times)
+    # print("Combination times:", combination_times)
+    # print("Minimal paths times:", minimalpaths_times)
 
     # Draw the plot
     fig, ax1 = plt.subplots(figsize=FIG_SIZE)
@@ -80,7 +80,7 @@ def plot_1(plot_name, topologies=None):
         handles,
         labels,
         loc="upper left",
-        fontsize=15,
+        fontsize=14,
     )
 
     # Save the plot
