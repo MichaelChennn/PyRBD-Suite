@@ -225,7 +225,7 @@ topos_1 = [
     "Norway",
     "Nobel_EU",
     # "india35",
-    # "jonas-us-ca",
+    # "janos-us-ca",
     # "pioro40",
     # "Germany_50",
     # "zib54",
@@ -243,13 +243,13 @@ topos_2_1 = [
     "Norway",
     "Nobel_EU",
     # "india35",
-    # "jonas-us-ca",
+    # "janos-us-ca",
     # "pioro40",
     # "Germany_50",
     # "zib54",
 ]
 
-topos_2_2 = ["india35", "jonas-us-ca", "pioro40"]
+topos_2_2 = ["india35", "janos-us-ca", "pioro40"]
 
 topos_3 = [
     "Abilene",
@@ -263,7 +263,7 @@ topos_3 = [
     "Norway",
     "Nobel_EU",
     "india35",
-    "jonas-us-ca",
+    "janos-us-ca",
     "pioro40",
     # "Germany_50",
     # "zib54",
