@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrbd3"
+version = "0.1.0"
+description = "PyRBD 3"
+requires-python = ">=3.7"
+dependencies = [
+    "pyrbd_utils",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
