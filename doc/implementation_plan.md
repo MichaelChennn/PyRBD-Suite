@@ -188,7 +188,7 @@ PyRBD-Suite/
 
 **Node/Edge Properties:**
 - Per-node availability probability (default configurable, e.g., 0.9)
-- Per-edge availability probability (default configurable, e.g., 0.95)
+- Per-edge availability probability (default disable this mode, i.e., all edges = 1)
 - Node labels (auto-numbered, editable)
 - Click node/edge to edit properties in a side panel
 
@@ -230,7 +230,7 @@ PyRBD-Suite/
 
 ---
 
-## API Endpoints (Draft)
+## API Endpoints
 
 ### Topology
 | Method | Endpoint | Description |
