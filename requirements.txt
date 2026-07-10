@@ -3,3 +3,7 @@ networkx
 tqdm
 loguru
 numpy
+fastapi
+uvicorn[standard]
+pydantic
+httpx

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrbd_suite"
+version = "1.0.0"
+description = "Unified Python wrapper for PyRBD-Suite reliability analysis"
+requires-python = ">=3.8"
+dependencies = [
+    "networkx",
+    "numpy",
+    "pandas",
+    "tqdm",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

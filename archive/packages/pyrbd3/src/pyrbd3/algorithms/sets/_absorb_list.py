@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Iterable, Iterator, Hashable, Set, Dict
+from typing import Iterable, Iterator, Hashable, Set, Dict, List
 
 class AbsorbList:
     """
@@ -11,7 +11,7 @@ class AbsorbList:
         * Otherwise, simply add the new set.
     """
 
-    def __init__(self, sets: Iterable[Iterable[Hashable]] | None = None) -> None:
+    def __init__(self, sets: Iterable[Iterable[Hashable]] = None) -> None:
         # Store sets grouped by their size (bucketed by cardinality)
         self.buckets: Dict[int, Set[frozenset]] = defaultdict(set)
         self._count = 0
@@ -67,7 +67,7 @@ class AbsorbList:
                     return False
 
         # Case 2: remove all existing supersets of the new one
-        to_remove: list[frozenset] = []
+        to_remove: List[frozenset] = []
         for k in list(self.buckets.keys()):
             if k < m:
                 continue
@@ -105,7 +105,7 @@ class AbsorbList:
             out |= set(bucket)
         return out
     
-    def to_set_list(self) -> list[set]:
+    def to_set_list(self) -> List[Set]:
         """Return all sets as list of sets."""
         out: list[set] = []
         for bucket in self.buckets.values():

@@ -1,0 +1,9 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "pybind11>=2.13"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyrbd_core"
+version = "1.0.0"
+description = "Unified C++ core for PyRBD-Suite reliability analysis"
+requires-python = ">=3.8"
